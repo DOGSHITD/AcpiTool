@@ -1,0 +1,94 @@
+﻿<Page x:Class="AcpiTool.CallMethod"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:acpitool ="clr-namespace:AcpiTool"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+	Title="CallMethod" MinWidth="360" MinHeight="250">
+
+    <Grid Background="White" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.618*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TreeView ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"  Margin="5,2,5,2" BorderBrush="LightBlue"
+                              x:Name="treeViewMethod">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type acpitool:MethodToCall}" ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Path=Name}"/>
+                    <HierarchicalDataTemplate.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem">
+                            <Setter Property="IsExpanded" Value="False" />
+                        </Style>
+                    </HierarchicalDataTemplate.ItemContainerStyle>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        <Grid Grid.Column="1" HorizontalAlignment="Stretch"  Margin="5,2,5,2" VerticalAlignment="Stretch" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="0,2,0,2">
+                <GroupBox Header="Method" BorderBrush="LightBlue">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width=" 80"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox  Grid.Column="0"  FontSize="12" Margin="5,0,5,0" IsReadOnly="True" BorderThickness="0" Text="{Binding Path=SelectedItem.Path, ElementName=treeViewMethod}"/>
+                        <Button Grid.Column="1" Content="Execute" Margin="5,0,5,0" Click="ExecuteMethod"/>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+            <Grid Grid.Row="1" Margin="0,2,0,2">
+                <GroupBox Header="Argument" BorderBrush="LightBlue">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Margin="0,2,0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80" />
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox Grid.Column="0" Background="White" Margin="5,0,5,0" x:Name="comboBoxType">
+                                <ComboBoxItem Content="Int"/>
+                                <ComboBoxItem Content="String"/>
+                                <ComboBoxItem Content="Buffer"/>
+                                <ComboBoxItem Content="Package"/>
+                            </ComboBox>
+                            <TextBox Grid.Column="1" Margin="5,0,5,0" x:Name="textBoxData"/>
+                            <Button Grid.Column="2" Content="Add" Margin="5,0,5,0" Click="AddArgument"/>
+                        </Grid>
+                        <Grid Grid.Row="1" Margin="0,2,0,2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+                            <ComboBox Grid.Column="0" Background="White" Margin="5,0,5,0" x:Name="comboBoxArgument">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate >
+                                        <ComboBoxItem Content="{Binding Path=Information}" IsHitTestVisible="False"></ComboBoxItem>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Grid.Column="1" Content="Delete" Margin="5,0,5,0" Click="DeleteArgument"/>
+                        </Grid>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+            <Grid Grid.Row="2">
+                <GroupBox Header="Returns" BorderBrush="LightBlue">
+                    <TextBox IsReadOnly="True" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0"
+                             x:Name="textBoxOutput"/>
+                </GroupBox>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
